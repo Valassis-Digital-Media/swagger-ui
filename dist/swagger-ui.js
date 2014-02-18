@@ -1333,7 +1333,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       'click #show-pet-store-icon': 'showPetStore',
       'click #show-wordnik-dev-icon': 'showWordnikDev',
       'click #explore': 'showCustom',
-      'keyup #input_baseUrl': 'showCustomOnKeyup',
+      'change #select_baseUrl': 'showCustom',
       'keyup #input_apiKey': 'showCustomOnKeyup'
     };
 
@@ -1362,7 +1362,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         e.preventDefault();
       }
       return this.trigger('update-swagger-ui', {
-        url: $('#input_baseUrl').val(),
+        url: $('#select_baseUrl option:selected').val(),
         apiKey: $('#input_apiKey').val()
       });
     };
@@ -1371,7 +1371,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       if (trigger == null) {
         trigger = false;
       }
-      $('#input_baseUrl').val(url);
+      $('#select_baseUrl').val(url);
       if (trigger) {
         return this.trigger('update-swagger-ui', {
           url: url

@@ -1,0 +1,6 @@
+# ChangeLog
+git clone https://github.com/wordnik/swagger-ui.git
+cd swagger-ui
+git checkout tags/v2.0.3
+
+Apply updates.

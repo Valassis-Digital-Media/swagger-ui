@@ -517,7 +517,7 @@ table {
 }
 .swagger-ui-wrap form.formtastic fieldset.inputs ol li label abbr {
   padding-left: 3px;
-  color: #888888;
+  color: #666666;
 }
 .swagger-ui-wrap form.formtastic fieldset.inputs ol li p.inline-hints {
   margin-left: 0;
@@ -1007,8 +1007,13 @@ table {
   color: black;
 }
 #header {
-  background-color: #89bf04;
-  padding: 14px;
+    background:
+      url(../images/footer-redplum-logo.png) 20px 8px no-repeat,
+      url(../images/header-bg.png) 0 0 repeat-x;
+    padding: 14px 14px 14px 115px;
+    -webkit-box-shadow: 0px 5px 7px rgba(50, 50, 50, 0.25);
+    -moz-box-shadow:    0px 5px 7px rgba(50, 50, 50, 0.25);
+    box-shadow:         0px 5px 7px rgba(50, 50, 50, 0.25);
 }
 #header a#logo {
   font-size: 1.5em;
@@ -1042,7 +1047,7 @@ table {
   padding: 6px 8px;
   font-size: 0.9em;
   color: white;
-  background-color: #547f00;
+  background-color: #369;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   -o-border-radius: 4px;

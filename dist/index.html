@@ -16,10 +16,54 @@
   <script src='lib/swagger.js' type='text/javascript'></script>
   <script src='swagger-ui.js' type='text/javascript'></script>
   <script src='lib/highlight.7.3.pack.js' type='text/javascript'></script>
+  <script src='lib/jquery.base64.min.js' type='text/javascript'></script>
+
+  <style type="text/css">
+        .swagger-ui-wrap {
+            max-width: 960px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .header-wrap {
+            max-width: 1975px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #api_selector {
+            float:none !important;
+            margin: 0 auto;
+            max-width: 1060px;
+            overflow: hidden;
+        }
+        #input_baseUrl {
+            width:315px !important;
+        }
+        #input_valAppCode {
+            width:210px;
+        }
+        .icon-btn {
+            cursor: pointer;
+        }
+
+        #message-bar {
+            min-height: 30px;
+            text-align: center;
+            padding-top: 10px;
+        }
+
+        .message-success {
+            color: #89BF04;
+        }
+
+        .message-fail {
+            color: #cc0000;
+        }
+  </style>
+
   <script type="text/javascript">
     $(function () {
       window.swaggerUi = new SwaggerUi({
-      url: "http://petstore.swagger.wordnik.com/api/api-docs",
+      url: $('#select_baseUrl option:selected').val(),
       dom_id: "swagger-ui-container",
       supportedSubmitMethods: ['get', 'post', 'put', 'delete'],
       onComplete: function(swaggerApi, swaggerUi){
@@ -37,6 +81,7 @@
       docExpansion: "none"
     });
 
+    <!--
     $('#input_apiKey').change(function() {
       var key = $('#input_apiKey')[0].value;
       console.log("key: " + key);
@@ -44,8 +89,30 @@
         console.log("added key " + key);
         window.authorizations.add("key", new ApiKeyAuthorization("api_key", key, "query"));
       }
-    })
-    window.swaggerUi.load();
+    });
+    -->
+    $('#input_password').change(function() {
+      var username = $('#input_username')[0].value;
+      var password = $('#input_password')[0].value;
+      var auth = "Basic " + $.base64.encode(username + ":" + password);
+      if(username && password && auth.trim() !== "") {
+        log("added auth " + auth + " : (" + username + ":****)");
+        window.authorizations.add("authorization", new ApiKeyAuthorization("authorization", auth, "header"));
+      }
+    });
+    $('#input_appCode').change(function() {
+      var appCode = $('#input_appCode')[0].value;
+      if(appCode) {
+        log("added appCode : " + appCode);
+        window.authorizations.add("appCode", new ApiKeyAuthorization("X-Valassis-Application-Code", appCode, "header"));
+      }
+    });
+    $('#input_languageCode').change(function() {
+      var languageCode = $('#input_languageCode')[0].value || "en";
+      window.authorizations.add("languageCode", new ApiKeyAuthorization("Accept-Language", languageCode, "header"));
+    });
+    // comment out window.swaggerUi.load() to avoid Authorization popup on first page load.
+    //window.swaggerUi.load();
   });
 
   </script>
@@ -53,18 +120,22 @@
 
 <body>
 <div id='header'>
-  <div class="swagger-ui-wrap">
-    <a id="logo" href="http://swagger.wordnik.com">swagger</a>
+  <div class="header-wrap">
 
     <form id='api_selector'>
-      <div class='input icon-btn'>
-        <img id="show-pet-store-icon" src="images/pet_store_api.png" title="Show Swagger Petstore Example Apis">
+      <div class='input'>
+        <select id="select_baseUrl" name="select_baseUrl">
+          <option value="http://localhost:8080/accessmanager/api-docs">Access Manager</option>
+          <option selected value="http://localhost:8080/dox-server/api-docs">Coupons Api</option>
+          <option value="http://localhost:8080/offermanager-service-v2/api-docs">Offer Manager</option>
+          <option value="http://localhost:8080/printmanager/api-docs">Print Manager</option>
+        </select>
       </div>
-      <div class='input icon-btn'>
-        <img id="show-wordnik-dev-icon" src="images/wordnik_api.png" title="Show Wordnik Developer Apis">
-      </div>
-      <div class='input'><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/></div>
-      <div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="text"/></div>
+      <div class='input'><input placeholder="application code (admin only)" id="input_appCode" name="appCode" size="32" type="text"/></div>
+      <div class='input'><input placeholder="lang" id="input_languageCode" name="languageCode" size="4" type="text"/></div>
+      <div class='input'><input placeholder="username" id="input_username" name="username" type="text"/></div>
+      <div class='input'><input placeholder="password" id="input_password" name="password" type="password"/></div>
+      <div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="hidden"/></div>
       <div class='input'><a id="explore" href="#">Explore</a></div>
     </form>
   </div>
